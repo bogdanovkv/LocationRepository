@@ -1,0 +1,34 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "DatabaseAbstraction",
+        "repositoryURL": "https://github.com/bogdanovkv/DatabaseAbstraction",
+        "state": {
+          "branch": null,
+          "revision": "45d3f3955c672c4166e430200e515ed3e902ceb8",
+          "version": "1.0.3"
+        }
+      },
+      {
+        "package": "LocationRepositoryAbstraction",
+        "repositoryURL": "https://github.com/bogdanovkv/LocationRepositoryAbstraction.git",
+        "state": {
+          "branch": null,
+          "revision": "41efc928102634738e9faf02391f65d1efed9fc2",
+          "version": "1.0.2"
+        }
+      },
+      {
+        "package": "NetworkAbstraction",
+        "repositoryURL": "https://github.com/bogdanovkv/NetworkAbstration.git",
+        "state": {
+          "branch": null,
+          "revision": "bc9248116fae94cccc4e95e643a8ea6f027b14af",
+          "version": "1.0.3"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
