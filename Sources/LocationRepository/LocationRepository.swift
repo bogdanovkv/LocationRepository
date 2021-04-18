@@ -10,7 +10,7 @@ import NetworkAbstraction
 import DatabaseAbstraction
 import Foundation
 
-final class LocationDataRepository: LocationRepositoryProtocol {
+public final class LocationRepository: LocationRepositoryProtocol {
 	private let token = "fe17c550289588390f32bb8a4caf562f"
 	private enum Endoint: String {
 		case currentLocation = "http://www.travelpayouts.com/whereami"
@@ -22,13 +22,13 @@ final class LocationDataRepository: LocationRepositoryProtocol {
 	private let networkService: NetworkServiceProtocol
 	private let coreDataService: DatabaseServiceProtocol
 
-	init(networkService: NetworkServiceProtocol,
+	public init(networkService: NetworkServiceProtocol,
 		 coreDataService: DatabaseServiceProtocol) {
 		self.networkService = networkService
 		self.coreDataService = coreDataService
 	}
 
-	func loadLocation(_ completion: @escaping (Result<LocationModel, Error>) -> Void) {
+	public func loadLocation(_ completion: @escaping (Result<LocationModel, Error>) -> Void) {
 		guard let url = URL(string: Endoint.currentLocation.rawValue) else {
 			return completion(.failure(LocationRepositoryError.urlError))
 		}
@@ -51,7 +51,7 @@ final class LocationDataRepository: LocationRepositoryProtocol {
 		networkService.perfom(request: request, onComplete)
 	}
 
-	func loadCities(_ completion: @escaping (Result<[CityModel], Error>) -> Void) {
+	public func loadCities(_ completion: @escaping (Result<[CityModel], Error>) -> Void) {
 		guard let url = URL(string: Endoint.allCities.rawValue) else {
 			return completion(.failure(LocationRepositoryError.urlError))
 		}
@@ -72,7 +72,7 @@ final class LocationDataRepository: LocationRepositoryProtocol {
 		networkService.perfom(request: request, onComplete)
 	}
 
-	func loadCountries(_ completion: @escaping (Result<[CountryModel], Error>) -> Void) {
+	public func loadCountries(_ completion: @escaping (Result<[CountryModel], Error>) -> Void) {
 		guard let url = URL(string: Endoint.allCountries.rawValue) else {
 			return completion(.failure(LocationRepositoryError.urlError))
 		}
@@ -91,7 +91,7 @@ final class LocationDataRepository: LocationRepositoryProtocol {
 		}
 	}
 
-	func loadAirports(_ completion: @escaping (Result<[AirportModel], Error>) -> Void) {
+	public func loadAirports(_ completion: @escaping (Result<[AirportModel], Error>) -> Void) {
 		guard let url = URL(string: Endoint.allAirports.rawValue) else {
 			return completion(.failure(LocationRepositoryError.urlError))
 		}
@@ -110,7 +110,7 @@ final class LocationDataRepository: LocationRepositoryProtocol {
 		}
 	}
 
-	func save(countries: [CountryModel], completion: @escaping () -> Void) {
+	public func save(countries: [CountryModel], completion: @escaping () -> Void) {
 
 		let convertClosure: (CountryModel, StoredObjectProtocol) -> Void = { model, databaseModel in
 			databaseModel.setValue(model.name, forKey: "name")
@@ -125,7 +125,7 @@ final class LocationDataRepository: LocationRepositoryProtocol {
 							   completion: completion)
 	}
 
-	func save(cities: [CityModel], completion: @escaping () -> Void) {
+	public func save(cities: [CityModel], completion: @escaping () -> Void) {
 
 		let convertClosure: (CityModel, StoredObjectProtocol) -> Void = { model, databaseModel in
 			databaseModel.setValue(model.name, forKey: "name")
@@ -139,7 +139,7 @@ final class LocationDataRepository: LocationRepositoryProtocol {
 		coreDataService.insert(storeId: "CityManaged", models: cities, convertClosure: convertClosure, completion: completion)
 	}
 
-	func save(airports: [AirportModel], completion: @escaping () -> Void) {
+	public func save(airports: [AirportModel], completion: @escaping () -> Void) {
 
 		let convertClosure: (AirportModel, StoredObjectProtocol) -> Void = { model, databaseModel in
 			databaseModel.setValue(model.name, forKey: "name")
@@ -151,7 +151,7 @@ final class LocationDataRepository: LocationRepositoryProtocol {
 		coreDataService.insert(storeId: "AirportManaged", models: airports, convertClosure: convertClosure, completion: completion)
 	}
 
-	func getCity(with name: String) -> CityModel? {
+	public func getCity(with name: String) -> CityModel? {
 		let convertClosure: (StoredObjectProtocol) -> CityModel? = { databaseModel in
 			guard let codeIATA: String = databaseModel.value(forKey: "codeIATA"),
 				let countryCode: String = databaseModel.value(forKey: "countryCode"),
@@ -163,7 +163,7 @@ final class LocationDataRepository: LocationRepositoryProtocol {
 		return cities.first
 	}
 
-	func getCountry(with name: String) -> CountryModel? {
+	public func getCountry(with name: String) -> CountryModel? {
 		let convertClosure: (StoredObjectProtocol) -> CountryModel? = { databaseModel in
 			guard let codeIATA: String = databaseModel.value(forKey: "codeIATA"),
 				let name: String = databaseModel.value(forKey: "name") else { return nil }
@@ -174,7 +174,7 @@ final class LocationDataRepository: LocationRepositoryProtocol {
 		return cities.first
 	}
 
-	func getCountries() -> [CountryModel] {
+	public func getCountries() -> [CountryModel] {
 		let convertClosure: (StoredObjectProtocol) -> CountryModel? = { databaseModel in
 			guard let codeIATA: String = databaseModel.value(forKey: "codeIATA"),
 				  let name: String = databaseModel.value(forKey: "name") else { return nil }
@@ -184,7 +184,7 @@ final class LocationDataRepository: LocationRepositoryProtocol {
 		return countries
 	}
 
-	func getCities(for country: CountryModel) -> [CityModel] {
+	public func getCities(for country: CountryModel) -> [CityModel] {
 		let convertClosure: (StoredObjectProtocol) -> CityModel? = { databaseModel in
 			guard let codeIATA: String = databaseModel.value(forKey: "codeIATA"),
 				let countryCode: String = databaseModel.value(forKey: "countryCode"),
@@ -200,7 +200,7 @@ final class LocationDataRepository: LocationRepositoryProtocol {
 		return cities
 	}
 
-	func getAirports() -> [AirportModel] {
+	public func getAirports() -> [AirportModel] {
 		let convertClosure: (StoredObjectProtocol) -> AirportModel? = { databaseModel in
 			guard let code: String = databaseModel.value(forKey: "code"),
 				let countryCode: String = databaseModel.value(forKey: "countryCode"),
@@ -215,7 +215,7 @@ final class LocationDataRepository: LocationRepositoryProtocol {
 		return airpots
 	}
 
-	func clearLocations() {
+	public func clearLocations() {
 		let group = DispatchGroup()
 		group.enter()
 		group.enter()
