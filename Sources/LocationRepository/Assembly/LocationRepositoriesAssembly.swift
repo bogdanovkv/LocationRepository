@@ -21,8 +21,8 @@ public final class LocationRepositoriesAssembly {
 	///   - networkService: сервис работы с сетью
 	///   - databaseService: сервис работы с БД
 	/// - Returns: репозиторий городов
-	public func createCountriesRepository(networkService: NetworkServiceProtocol,
-										  databaseService: DatabaseServiceProtocol) -> CitiesRepositoryProtocol {
+	public func createCitiesRepository(networkService: NetworkServiceProtocol,
+									   databaseService: DatabaseServiceProtocol) -> CitiesRepositoryProtocol {
 		return CitiesRepository(networkService: networkService,
 								databaseService: databaseService,
 								token: token)
