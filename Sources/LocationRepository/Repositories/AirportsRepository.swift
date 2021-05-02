@@ -105,6 +105,7 @@ final class AirportsRepository: AirportsRepositoryProtocol {
 
 	func clearAipotrs() {
 		let group = DispatchGroup()
+		group.enter()
 		databaseService.deleteAll(storeId: "AirportManaged") {
 			group.leave()
 
